@@ -1,23 +1,113 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 
 # testing
 /coverage
+/.nyc_output
 
-# production
+# build output
 /build
+/public/static
+/public/*.map
 
-# misc
+# Misc
 .DS_Store
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Optional npm cache directory
+.npm
+
+# Optional REACT_NATIVE_PACKAGER environment variable (Metro Bundler)
+.react-native
+
+# Other files and directories
+/tmp
+/logs
+*.log
+.pnpm-debug.log*
+
+# Next.js specific
+/.next
+/out
+/.vercel
+.next
+out
+
+# Expo specific
+.expo
+.expo-shared
+web-build/
+
+# VS Code settings and extensions
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Local environment variables
+.env
+
+# MacOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Temporary files
+.TemporaryItems
+.Trashes
+**/Icon?
+**/._*
+**/.Spotlight-V100
+**/.Trashes
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux specific
+*.pid
+*.seed
+*.state
+
+# Parcel cache
+.cache
+
+# TypeScript cache
+*.tsbuildinfo
+
+# JetBrains IDEs
+.idea/
+*.iml
+
+# Sentry environment files
+.sentryclirc
+.sentry-releases
+
+# Cypress test results
+/cypress/screenshots
+/cypress/videos
