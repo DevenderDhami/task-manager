@@ -1,0 +1,8 @@
+html {
+    overflow-y: scroll; /* Ensures scrollbar is always present */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
