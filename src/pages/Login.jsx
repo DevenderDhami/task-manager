@@ -2,36 +2,47 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useGlobal } from '../context/Global';
+import { signIn } from '../services/userServices';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user } = useGlobal()
+  const { user, setUser } = useGlobal(); // Ensure you have setUser in your global context
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    username: "testuser",
+    password: "password123"
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
-      navigate('/todo-list')
+      navigate('/todo-list');
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem('user', JSON.stringify(formData));
-
-    toast.success('Login successful!');
-    navigate("/todo-list"); // Redirect to To-Do List page after successful login
-    setFormData({
-      email: '',
-      password: ''
-    });
+    setLoading(true);
+    try {
+      const response = await signIn(formData.username, formData.password);
+      if (response.success) {
+        setUser(response.user);
+        localStorage.setItem('user', JSON.stringify(response.user)); // Save user info
+        localStorage.setItem('token', response.token); // Save token if needed
+        toast.success('Login successful!');
+        navigate('/todo-list'); // Redirect to To-Do List page after successful login
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error('Login failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,12 +54,12 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-gray-700">Email</label>
+            <label htmlFor="username" className="block text-gray-700">Username</label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
               onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
               required
@@ -71,9 +82,10 @@ const Login = () => {
           <div className="flex justify-center">
             <button
               type="submit"
-              className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition"
+              className={`bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={loading}
             >
-              Login
+              {loading ? 'Logging in...' : 'Login'}
             </button>
           </div>
         </form>
